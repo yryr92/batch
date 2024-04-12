@@ -1,5 +1,7 @@
 package com.spring.batch.domain;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,5 +10,7 @@ import lombok.Setter;
 public class ResponseDto {
 
     BoxOfficeResult boxOfficeResult;
+    int page;
+    List<Movie> results;
     
 }

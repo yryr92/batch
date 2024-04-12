@@ -23,7 +23,7 @@ public class SimpleTasklet implements Tasklet {
 
         log.info(">>>> batch is working");
         String uri = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=00729736c099d786c372ad83e58762ae&targetDt=20240407";
-
+        
         //String movie =  WebClient.create().get().uri(uri).retrieve().bodyToMono(String.class).block();
         ResponseDto r = WebClient.create().get().uri(uri).retrieve().bodyToMono(ResponseDto.class).block();
 

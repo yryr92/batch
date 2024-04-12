@@ -11,6 +11,6 @@ public class BoxOfficeResult {
 
     String boxofficeType;
     String showRange;
-    List<Movie> dailyBoxOfficeList;
+    List<KobisMovie> dailyBoxOfficeList;
     
 }
