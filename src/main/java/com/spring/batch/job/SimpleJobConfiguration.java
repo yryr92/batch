@@ -17,6 +17,7 @@ import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.spring.batch.domain.KobisMovie;
@@ -66,6 +67,7 @@ public class SimpleJobConfiguration {
         return new StepBuilder("movieStep", jobRepository)
             .<List<Movie>, List<Movie>>chunk(1, transactionManager)
             .reader(movieItemReader())
+            .processor(movieItemProcessor())
             .writer(movieItemWriter())
             .build();
         
@@ -78,8 +80,22 @@ public class SimpleJobConfiguration {
     }
 
     @Bean
-    public ItemProcessor<ResponseDto, List<KobisMovie>> movieItemProcessor() {
+    public ItemProcessor<List<Movie>, List<Movie>> movieItemProcessor() {
         return new MovieItemProcessor();
+    }
+
+    @Bean
+    public ItemProcessor<List<Movie>, List<Movie>> getMoviePosterProcessor() {
+        return new ItemProcessor<List<Movie>,List<Movie>>() {
+
+            @Override
+            @Nullable
+            public List<Movie> process(@NonNull List<Movie> item) throws Exception {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'process'");
+            }
+            
+        };
     }
 
     @Bean
@@ -99,11 +115,11 @@ public class SimpleJobConfiguration {
         
     }
 
-    @Bean
-    public JdbcBatchItemWriter<List<Movie>> jdbcMovieItemWriter(DataSource dataSource, PagingQueryProvider queryProvider) {
-        return null;
+    // @Bean
+    // public JdbcBatchItemWriter<List<Movie>> jdbcMovieItemWriter(DataSource dataSource, PagingQueryProvider queryProvider) {
+    //     return null;
         
-    }
+    // }
 
 
 

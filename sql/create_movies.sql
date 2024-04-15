@@ -1,4 +1,4 @@
-create table movie(
+create table movies(
 	id int primary key,
     title varchar(50) not null,
     backdrop_path varchar(100) not null,
@@ -6,6 +6,6 @@ create table movie(
     popularity double,
     release_date date,
     video boolean,
-    voteAverage double,
-	voteCount int
+    vote_average double,
+	vote_count int
 );

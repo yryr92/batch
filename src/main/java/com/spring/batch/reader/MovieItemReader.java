@@ -9,7 +9,6 @@ import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.spring.batch.domain.KobisMovie;
 import com.spring.batch.domain.Movie;
 import com.spring.batch.domain.ResponseDto;
 

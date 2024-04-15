@@ -1,5 +1,6 @@
 package com.spring.batch.domain;
 
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,17 +9,15 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Movie {
+    @Id
     int id;
     String title;
     String backdrop_path;
-    String[] genreIds;
-    String originalLanguage;
-    String originalTitle;
     String overview;
     double popularity;
-    String posterPath;
-    String releaseDate;
+    String release_date;
     boolean video;
-    double voteAverage;
-    int voteCount;
+    double vote_average;
+    int vote_count;
+    String fileDownloadYn;
 }
