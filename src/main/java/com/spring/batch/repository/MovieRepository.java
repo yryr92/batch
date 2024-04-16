@@ -29,7 +29,7 @@ public class MovieRepository {
     public void saveAllMovies(List<Movie> lists) {
 
         //String sql = "inset into movies values(:id, :title, :backdrop_path, :overview, :popularity, :release_date, :video, :vote_average, :vote_count)";
-        String sql = "insert into movies values(?, ?, ?, ?, ?, ?, ?, ?, ?, 'default')";
+        String sql = "insert into movies values(?, ?, ?, ?, ?, ?, ?, ?, ?, default)";
         
         //NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 
@@ -37,11 +37,18 @@ public class MovieRepository {
             // BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(m);
             
             log.info(">>> movie is {}", m.toString());
-            jdbcTemplate.update(sql, m.getId(), m.getTitle(), m.getBackdrop_path(), m.getOverview(), 
+            jdbcTemplate.update(sql, m.getId(), m.getTitle(), m.getPoster_path(), m.getOverview(), 
                 m.getPopularity(), m.getRelease_date(), m.isVideo(), m.getVote_average(), m.getVote_count());
 
             //namedParameterJdbcTemplate.queryForObject(sql, param, Movie.class);
         }
+    }
+
+    public void updateMovieDownloadYn(Movie movie) {
+        String sql = "UPDATE movies set fileDownloadYn = 'Y' where id = " + movie.getId();
+
+        jdbcTemplate.execute(sql);
+
     }
     
 }

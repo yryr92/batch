@@ -14,6 +14,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.PagingQueryProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -25,6 +26,7 @@ import com.spring.batch.domain.Movie;
 import com.spring.batch.domain.ResponseDto;
 import com.spring.batch.processor.MovieItemProcessor;
 import com.spring.batch.reader.MovieItemReader;
+import com.spring.batch.service.FileDownloader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor // 생성자 DI를 위한 lombok 어노테이션
 @Configuration
 public class SimpleJobConfiguration {
+
+    @Autowired
+    private FileDownloader fileDownloader;
 
     @Bean
     public Job simpleJob(JobRepository jobRepository) {
@@ -67,7 +72,7 @@ public class SimpleJobConfiguration {
         return new StepBuilder("movieStep", jobRepository)
             .<List<Movie>, List<Movie>>chunk(1, transactionManager)
             .reader(movieItemReader())
-            .processor(movieItemProcessor())
+            //.processor(movieItemProcessor())
             .writer(movieItemWriter())
             .build();
         
@@ -84,6 +89,8 @@ public class SimpleJobConfiguration {
         return new MovieItemProcessor();
     }
 
+
+
     @Bean
     public ItemProcessor<List<Movie>, List<Movie>> getMoviePosterProcessor() {
         return new ItemProcessor<List<Movie>,List<Movie>>() {
@@ -92,7 +99,11 @@ public class SimpleJobConfiguration {
             @Nullable
             public List<Movie> process(@NonNull List<Movie> item) throws Exception {
                 // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'process'");
+                for(Movie m : item) {
+                    fileDownloader.getImageUrl(m);
+                }
+
+                return item;
             }
             
         };
@@ -106,7 +117,9 @@ public class SimpleJobConfiguration {
             public void write(@NonNull Chunk<? extends List<Movie>> chunk) throws Exception {
 
                 for(int i = 0; i < chunk.getItems().get(0).size(); i++) {
-                    log.info(">>> what movie is ... {}", chunk.getItems().get(0).get(i).toString());
+                    //log.info(">>> what movie is ... {}", chunk.getItems().get(0).get(i).toString());
+                    Movie m = chunk.getItems().get(0).get(i);
+                    fileDownloader.getImageUrl(m);
                 }
 
             }
